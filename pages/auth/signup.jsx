@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { EyeIcon, EyeOffIcon } from "@heroicons/react/solid";
+import { useRouter } from "next/router";
 
 import Image from "next/image"
 import Link from "next/link"
@@ -9,6 +10,8 @@ export default function Signup() {
   const [name, setName] = useState("");
   const [password, setPassword] = useState("");
   const [passwordVisibility, setPasswordVisibility] = useState(false);
+
+  const router = useRouter();
 
   const togglePasswordVisibility = () => {
     setPasswordVisibility(!passwordVisibility);
@@ -45,7 +48,7 @@ export default function Signup() {
               <h3 className="text-gray-400">
                 Already have an account?
                 <Link href="/auth/signup" passHref>
-                  <a className="text-slate-700 font-bold" href="/auth/signup">{" "}Login.</a>
+                  <a className="text-slate-700 font-bold">{" "}Login.</a>
                 </Link>
               </h3>
             </div>
@@ -115,6 +118,7 @@ export default function Signup() {
                   <div>
                     <button
                       type="submit"
+                      onClick={() => router.push("/home")}
                       className="flex justify-center px-16 py-2 border border-transparent text-md font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
                     >
                       Create Account
