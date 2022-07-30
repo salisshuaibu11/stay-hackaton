@@ -130,11 +130,11 @@ const Home = () => {
                       name="currency"
                       className="focus:ring-indigo-500 h-full py-0 pl-2 pr-7 border-transparent bg-transparent sm:text-sm rounded text-base outline-none"
                     >
-                      <option>USDT</option>
-                      <option>BTC</option>
-                      <option>ETH</option>
-                      <option>GBP</option>
-                      <option>CAD</option>
+                      <option value={"DOGE"}>DOGE</option>
+                      <option value={"BTC"}>BTC</option>
+                      <option value={"ETH"}>ETH</option>
+                      <option value={"LTC"}>LTC</option>
+                      <option value={"TRON"}>TRON</option>
                     </select>
                   </div>
                 </div>
