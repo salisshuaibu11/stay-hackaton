@@ -21,7 +21,7 @@ api.interceptors.request.use(
     config.headers.Accept = "application/json";
     config.headers["Content-Type"] = "application/json";
     if (user) {
-      config.headers.Authorization = `Bearer ${user.accessToken}`;
+      config.headers.Authorization = `Bearer ${user.token}`;
     }
     return config;
   },

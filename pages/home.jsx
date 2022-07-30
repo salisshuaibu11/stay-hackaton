@@ -1,4 +1,4 @@
-import { useState, Fragment } from "react";
+import { useState, Fragment, useEffect } from "react";
 import {
   EyeIcon,
   EyeOffIcon,
@@ -12,6 +12,7 @@ import Auth from "@/hooks/useAuth";
 import { banks } from "../utils/bankList";
 import ConfirmPayment from "../components/ConfirmPayment";
 import OnBoarding from "../components/onBoarding";
+import api from "../services/api";
 
 const Home = () => {
   const [balanceVisibility, setBalanceVisibility] = useState(false);
@@ -19,6 +20,8 @@ const Home = () => {
   const [confirmPaymentOpen, setConfirmPaymentOpen] = useState(false);
   const [loading, setIsLoading] = useState(false);
   const [showQR, setShowQR] = useState(false);
+  const [crypto, setCrypto] = useState("DOGE");
+  const [rate, setRate] = useState(0);
 
   const toggleBalanceVisibility = () => {
     setBalanceVisibility(!balanceVisibility);
@@ -35,6 +38,27 @@ const Home = () => {
       setShowQR(true);
     }, 5000);
   };
+
+  const handleCrypto = async (e) => {
+    setCrypto(e.target.value);
+    try {
+      const value = await api.get(`/exchange/value?coin=${e.target.value}`);
+      setRate(value.data.data.value / 100);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  const onMount = async () => {
+    try {
+      const value = await api.get(`/exchange/value?coin=${crypto}`);
+      setRate(value.data.data.value / 100);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  useEffect(() => {
+    onMount();
+  }, []);
 
   return (
     <div className="min-h-screen overflow-hidden">
@@ -104,7 +128,8 @@ const Home = () => {
           {!showQR && !loading && (
             <form className="text-center mt-8 w-[30.6rem]">
               <h4 className="text-[#0F1D40] text-lg">
-                1 USDT = <span className="font-semibold">₦670</span>
+                1 {`${crypto}`} ={" "}
+                <span className="font-semibold">₦{rate.toLocaleString()}</span>
               </h4>
               <div className="mt-2">
                 <label
@@ -126,6 +151,8 @@ const Home = () => {
                       Currency
                     </label>
                     <select
+                      value={crypto}
+                      onChange={(e) => handleCrypto(e)}
                       id="currency"
                       name="currency"
                       className="focus:ring-indigo-500 h-full py-0 pl-2 pr-7 border-transparent bg-transparent sm:text-sm rounded text-base outline-none"
