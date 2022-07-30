@@ -1,5 +1,4 @@
 import { useState, Fragment } from "react";
-import { Dialog, Transition } from "@headlessui/react";
 import {
   EyeIcon,
   EyeOffIcon,
@@ -8,13 +7,13 @@ import {
   ArrowNarrowUpIcon,
 } from "@heroicons/react/solid";
 import QRCodeComponent from "../components/Address";
-
+import { Dialog, Transition } from "@headlessui/react";
+import Auth from "@/hooks/useAuth";
 import { banks } from "../utils/bankList";
-
 import ConfirmPayment from "../components/ConfirmPayment";
 import OnBoarding from "../components/onBoarding";
 
-export default function Home() {
+const Home = () => {
   const [balanceVisibility, setBalanceVisibility] = useState(false);
   const [open, setOpen] = useState(false);
   const [confirmPaymentOpen, setConfirmPaymentOpen] = useState(false);
@@ -331,4 +330,6 @@ export default function Home() {
       />
     </div>
   );
-}
+};
+
+export default Auth(Home);
