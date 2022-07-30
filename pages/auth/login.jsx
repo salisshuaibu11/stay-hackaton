@@ -48,7 +48,7 @@ export default function Login() {
       setIsLoading(false);
       const message = error.response.data.message;
 
-      toast(message);
+      toast.error(message);
     }
   }
 

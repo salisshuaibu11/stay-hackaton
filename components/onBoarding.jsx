@@ -8,7 +8,7 @@ import "swiper/css";
 import "swiper/css/navigation";
 
 export default function OnBoarding() {
-  const [isOpen, setIsOpen] = useState(true);
+  const [isOpen, setIsOpen] = useState(false);
 
   return (
     <Transition.Root show={isOpen} as={Fragment}>
