@@ -23,6 +23,7 @@ const Home = () => {
   const [crypto, setCrypto] = useState("DOGE");
   const [rate, setRate] = useState(0);
   const [balance, setBalance] = useState(0);
+  const [price, setPrice] = useState(0);
 
   const toggleBalanceVisibility = () => {
     setBalanceVisibility(!balanceVisibility);
@@ -52,8 +53,8 @@ const Home = () => {
   const onMount = async () => {
     try {
       const value = await api.get(`/exchange/value?coin=${crypto}`);
-      setRate(value.data.data.value / 100);
       const balance = await api.get(`/wallet/balance`);
+      setRate(value.data.data.value / 100);
       setBalance(balance.data.data.wallet.balance);
     } catch (error) {
       console.log(error);
@@ -62,6 +63,10 @@ const Home = () => {
   useEffect(() => {
     onMount();
   }, []);
+
+  const calculateFiat = () => {
+    return Number(price) * rate;
+  };
 
   return (
     <div className="min-h-screen overflow-hidden">
@@ -143,7 +148,9 @@ const Home = () => {
                 </label>
                 <div className="mt-1 relative rounded shadow-sm">
                   <input
-                    type="text"
+                    value={price}
+                    onChange={(e) => setPrice(e.target.value)}
+                    type="number"
                     name="price"
                     id="price"
                     className="block w-full font-semibold p-3 border text-base border-[#E2E4E8] rounded outline-none"
@@ -170,7 +177,10 @@ const Home = () => {
                 </div>
               </div>
               <h4 className="text-[#192648] text-lg mt-8 mb-6">
-                You receive <span className="font-semibold">₦67,000</span>
+                You receive{" "}
+                <span className="font-semibold">
+                  ₦{calculateFiat().toLocaleString()}
+                </span>
               </h4>
 
               <button
