@@ -13,12 +13,13 @@ import { banks } from "../utils/bankList";
 
 import ConfirmPayment from "../components/ConfirmPayment";
 import OnBoarding from "../components/onBoarding";
-import QRCode from "react-qr-code";
 
 export default function Home() {
   const [balanceVisibility, setBalanceVisibility] = useState(false);
   const [open, setOpen] = useState(false);
   const [confirmPaymentOpen, setConfirmPaymentOpen] = useState(false);
+  const [loading, setIsLoading] = useState(false);
+  const [showQR, setShowQR] = useState(false);
 
   const toggleBalanceVisibility = () => {
     setBalanceVisibility(!balanceVisibility);
@@ -26,6 +27,14 @@ export default function Home() {
 
   const confirmPaymentHandler = () => {
     setConfirmPaymentOpen(!confirmPaymentOpen);
+  };
+
+  const generateAddressHandler = () => {
+    setIsLoading(true);
+    setTimeout(() => {
+      setIsLoading(false);
+      setShowQR(true);
+    }, 5000);
   };
 
   return (
@@ -84,55 +93,66 @@ export default function Home() {
           </div>
         </div>
         <div className="flex-1 flex justify-center min-h-[34.3rem] bg-[#ECE8FF]">
-          {/* <QRCodeComponent /> */}
-          <form className="text-center mt-8 w-[30.6rem]">
-            <h4 className="text-[#0F1D40] text-lg">
-              1 USDT = <span className="font-semibold">₦670</span>
-            </h4>
-            <div className="mt-2">
-              <label
-                htmlFor="price"
-                className="block text-sm text-left font-semibold text-[#525C76]"
-              >
-                You send
-              </label>
-              <div className="mt-1 relative rounded shadow-sm">
-                <input
-                  type="text"
-                  name="price"
-                  id="price"
-                  className="block w-full font-semibold p-3 border text-base border-[#E2E4E8] rounded outline-none"
-                  placeholder="100"
-                />
-                <div className="absolute inset-y-0 right-0 w-[7rem]  text-[#F9F8FF] flex items-center px-2 bg-[#7B61FF] rounded">
-                  <label htmlFor="currency" className="sr-only">
-                    Currency
-                  </label>
-                  <select
-                    id="currency"
-                    name="currency"
-                    className="focus:ring-indigo-500 h-full py-0 pl-2 pr-7 border-transparent bg-transparent sm:text-sm rounded text-base outline-none"
-                  >
-                    <option>USDT</option>
-                    <option>BTC</option>
-                    <option>ETH</option>
-                    <option>GBP</option>
-                    <option>CAD</option>
-                  </select>
+          {loading && (
+            <div className="flex flex-col items-center mt-10">
+              <p className="font-medium text-xl text-[#0F1D40] text-center">
+                A unique address is being generated for you...
+              </p>
+              <img src="/loading.gif" className="mt-10" />
+            </div>
+          )}
+          {showQR && !loading && <QRCodeComponent />}
+          {!showQR && !loading && (
+            <form className="text-center mt-8 w-[30.6rem]">
+              <h4 className="text-[#0F1D40] text-lg">
+                1 USDT = <span className="font-semibold">₦670</span>
+              </h4>
+              <div className="mt-2">
+                <label
+                  htmlFor="price"
+                  className="block text-sm text-left font-semibold text-[#525C76]"
+                >
+                  You send
+                </label>
+                <div className="mt-1 relative rounded shadow-sm">
+                  <input
+                    type="text"
+                    name="price"
+                    id="price"
+                    className="block w-full font-semibold p-3 border text-base border-[#E2E4E8] rounded outline-none"
+                    placeholder="100"
+                  />
+                  <div className="absolute inset-y-0 right-0 w-[7rem]  text-[#F9F8FF] flex items-center px-2 bg-[#7B61FF] rounded">
+                    <label htmlFor="currency" className="sr-only">
+                      Currency
+                    </label>
+                    <select
+                      id="currency"
+                      name="currency"
+                      className="focus:ring-indigo-500 h-full py-0 pl-2 pr-7 border-transparent bg-transparent sm:text-sm rounded text-base outline-none"
+                    >
+                      <option>USDT</option>
+                      <option>BTC</option>
+                      <option>ETH</option>
+                      <option>GBP</option>
+                      <option>CAD</option>
+                    </select>
+                  </div>
                 </div>
               </div>
-            </div>
-            <h4 className="text-[#192648] text-lg mt-8 mb-6">
-              You receive <span className="font-semibold">₦67,000</span>
-            </h4>
+              <h4 className="text-[#192648] text-lg mt-8 mb-6">
+                You receive <span className="font-semibold">₦67,000</span>
+              </h4>
 
-            <button
-              type="button"
-              className="inline-flex items-center space-x-3 uppercase px-6 py-2 h-16 border border-indigo-400 text-[#F9F8FF] bg-[#7B61FF] shadow-sm text-base font-medium focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500  rounded"
-            >
-              generate payment address
-            </button>
-          </form>
+              <button
+                onClick={generateAddressHandler}
+                type="button"
+                className="inline-flex items-center space-x-3 uppercase px-6 py-2 h-16 border border-indigo-400 text-[#F9F8FF] bg-[#7B61FF] shadow-sm text-base font-medium focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500  rounded"
+              >
+                generate payment address
+              </button>
+            </form>
+          )}
           {/* <div className="w-[300px] h-fit border border-indigo-700 min-w-fit">
             QR code
           </div> */}
