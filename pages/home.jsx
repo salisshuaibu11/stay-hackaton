@@ -1,15 +1,25 @@
 import { useState, Fragment } from "react";
 import { Dialog, Transition } from '@headlessui/react'
 import { EyeIcon, EyeOffIcon, XIcon, LibraryIcon, ArrowNarrowUpIcon } from "@heroicons/react/solid";
+import {  useForm } from "react-hook-form";
 import Auth from "@/hooks/useAuth";
-import { banks } from "../utils/bankList";
 import ConfirmPayment from "../components/ConfirmPayment";
 import OnBoarding from "../components/onBoarding";
+import api from "@/services/api";
+import toast, { Toaster } from "react-hot-toast";
 
-const Home = () => {
+const Home = ({ banks }) => {
   const [balanceVisibility, setBalanceVisibility] = useState(false);
   const [open, setOpen] = useState(false);
   const [confirmPaymentOpen, setConfirmPaymentOpen] = useState(false);
+  const { register, formState: { errors } } = useForm();
+
+  const [amount, setAmount] = useState("");
+  const [account, setAccount] = useState("");
+  const [name, setName] = useState("");
+  const [bankName, setBankName] = useState("");
+  const [loadingName, setLoadingName] = useState(false);
+  const [bankCode, setBankCode] = useState("");
 
   const toggleBalanceVisibility = () => {
     setBalanceVisibility(!balanceVisibility);
@@ -17,6 +27,21 @@ const Home = () => {
 
   const confirmPaymentHandler = () => {
     setConfirmPaymentOpen(!confirmPaymentOpen);
+  };
+
+  const getAccountName = async (code) => {
+    setLoadingName(true);
+    try {
+      const {data} = await api.get(`https://stay-demo.herokuapp.com/account/name?bank_code=${code}&account_number=${account}`);
+
+      setName(data?.data.name);
+
+      setLoadingName(false);
+    } catch (error) {
+      const message = error.response.data.message;
+      toast(message);
+      setLoadingName(false);
+    }
   }
 
   return (
@@ -154,7 +179,7 @@ const Home = () => {
                         {/* Replace with your content */}
                         <div className="absolute inset-0 py-6 px-4 sm:px-6">
                           <h3 className="text-3xl text-slate-800 font-extrabold">Fill in Your Account Details</h3>
-                          <form action="#" method="POST" className="space-y-6 mt-10">
+                          <div className="space-y-6 mt-10">
                             <div>
                               <label htmlFor="amount" className="block text-sm font-medium text-gray-700">
                                 Enter Amount to Withdraw
@@ -164,48 +189,15 @@ const Home = () => {
                                   id="amount"
                                   name="amount"
                                   type="amount"
+                                  {...register("amount", {required: true})}
+                                  value={amount}
+                                  onChange={e => setAmount(e.target.value)}
                                   autoComplete="amount"
                                   required
                                   placeholder="eg. N 300"
                                   className="appearance-none block w-full px-3 py-2 border border-gray-300 shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
                                 />
-                              </div>
-                            </div>
-
-                            <div>
-                              <label htmlFor="email" className="block text-sm font-medium text-gray-700">
-                                Recipient&apos;s Email Address
-                              </label>
-                              <div className="mt-1">
-                                <input
-                                  id="email"
-                                  name="email"
-                                  type="email"
-                                  autoComplete="email"
-                                  required
-                                  placeholder="STAY@gmail.com"
-                                  className="appearance-none block w-full px-3 py-2 border border-gray-300 shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-                                />
-                              </div>
-                            </div>
-
-                            <div>
-                              <label htmlFor="price" className="block text-sm font-medium text-gray-700">
-                                
-                              </label>
-                              <div className="mt-1 relative shadow-sm border border-gray-200">
-                                <div className="absolute inset-y-0 left-0 pl-3 pr-3 flex items-center pointer-events-none">
-                                  <LibraryIcon className="w-6 h-6 text-gray-500"/>
-                                </div>
-                                <select
-                                    id="currency"
-                                    name="currency"
-                                    className="focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 h-full py-2 w-full pl-10 border-transparent bg-transparent text-gray-500 sm:text-sm rounded-md"
-                                  >
-                                    {banks.map(({id, name}) => (
-                                      <option key={id}>{name}</option>
-                                    ))}
-                                  </select>
+                                {errors.amount && <p className="text-red-600">Please make sure you put amount</p>}
                               </div>
                             </div>
 
@@ -215,14 +207,44 @@ const Home = () => {
                               </label>
                               <div className="mt-1">
                                 <input
-                                  id="account-number"
-                                  name="account-number"
-                                  type="account-number"
-                                  autoComplete="account-number"
+                                  id="account"
+                                  name="account"
+                                  type="account"
+                                  autoComplete="account"
+                                  {...register("account", {required: true, minLength: 10})}
+                                  value={account}
+                                  onChange={e => setAccount(e.target.value)}
                                   required
                                   placeholder="123456789"
                                   className="appearance-none block w-full px-3 py-2 border border-gray-300 shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
                                 />
+                                {errors.account && <p className="text-red-600">Please check the account number</p>}
+                              </div>
+                            </div>
+
+                            <div>
+                              <div className="mt-1 relative shadow-sm border border-gray-200">
+                                <div className="absolute inset-y-0 left-0 pl-3 pr-3 flex items-center pointer-events-none">
+                                  <LibraryIcon className="w-6 h-6 text-gray-500"/>
+                                </div>
+                                <select
+                                    id="currency"
+                                    name="currency"
+                                    onChange={(e) => {
+                                      getAccountName(e.target.value);
+                                      const bank = banks.find((bank) => bank.code === e.target.value);
+                                      setBankName(bank.name);
+                                      setBankCode(bank.code);
+                                    }}
+                                    className="focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 h-full py-2 w-full pl-10 border-transparent bg-transparent text-gray-500 sm:text-sm rounded-md"
+                                  >
+                                    {banks.map((bank) => (
+                                      <option
+                                        value={bank.code}
+                                        key={bank.name}
+                                      >{bank.name}</option>
+                                    ))}
+                                  </select>
                               </div>
                             </div>
 
@@ -236,23 +258,25 @@ const Home = () => {
                                   name="name"
                                   type="name"
                                   autoComplete="name"
+                                  value={loadingName ? "Loading..." : name}
+                                  onChange={e => setName(e.target.value)}
+                                  {...register("name")}
                                   required
-                                  placeholder="STAY TEAM"
-                                  className="appearance-none block w-full px-3 py-2 border border-gray-300 shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                                  className="appearance-none cursor-not-allowed block w-full px-3 py-2 border text-slate-600 bg-gray-100 border-gray-300 shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
                                 />
                               </div>
                             </div>
 
                             <div>
                               <button
-                                type="submit"
+                                type="click"
                                 onClick={confirmPaymentHandler}
                                 className="flex justify-center uppercase px-16 py-2 border border-transparent text-md font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
                               >
                                 withdraw
                               </button>
                             </div>
-                          </form>
+                          </div>
                         </div>
                         {/* /End replace */}
                       </div>
@@ -266,9 +290,30 @@ const Home = () => {
       </Transition.Root>
       <OnBoarding />                       
       {/* Confirm Payment Modal */}
-      <ConfirmPayment isOpen={confirmPaymentOpen} modalHandler={confirmPaymentHandler}/>
+      <ConfirmPayment 
+        isOpen={confirmPaymentOpen} 
+        modalHandler={confirmPaymentHandler}
+        name={name}
+        bankCode={bankCode}
+        bankName={bankName}
+        account={account}
+        amount={amount}
+      />
+      <Toaster />
     </div>
   )
+}
+
+export async function getStaticProps() {
+  const res = await fetch("https://stay-demo.herokuapp.com/account/banks");
+
+  const banks = await res.json();
+
+  return {
+    props: {
+      banks: banks.data,
+    },
+  }
 }
 
 export default Auth(Home);

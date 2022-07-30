@@ -44,7 +44,7 @@ export default function Signup() {
       setIsLoading(false);
     } catch (error) {
       setIsLoading(false);
-      toast(error.message);
+      toast.error(error.message);
     }
   }
 

@@ -4,12 +4,7 @@ const api = axios.create({
   baseURL:
     process.env.NEXT_PUBLIC_BASE_URL || "https://stay-demo.herokuapp.com",
   // timeout: 5000,
-  transformResponse: axios.defaults.transformResponse.concat((data) => {
-    return data;
-  }),
-  validateStatus: function (status) {
-    return status >= 200 && status < 400;
-  },
+
 });
 
 api.interceptors.request.use(
@@ -21,7 +16,7 @@ api.interceptors.request.use(
     config.headers.Accept = "application/json";
     config.headers["Content-Type"] = "application/json";
     if (user) {
-      config.headers.Authorization = `Bearer ${user.accessToken}`;
+      config.headers.Authorization = `Bearer ${user.token}`;
     }
     return config;
   },
