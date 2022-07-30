@@ -22,6 +22,7 @@ const Home = () => {
   const [showQR, setShowQR] = useState(false);
   const [crypto, setCrypto] = useState("DOGE");
   const [rate, setRate] = useState(0);
+  const [balance, setBalance] = useState(0);
 
   const toggleBalanceVisibility = () => {
     setBalanceVisibility(!balanceVisibility);
@@ -52,6 +53,8 @@ const Home = () => {
     try {
       const value = await api.get(`/exchange/value?coin=${crypto}`);
       setRate(value.data.data.value / 100);
+      const balance = await api.get(`/wallet/balance`);
+      setBalance(balance.data.data.wallet.balance);
     } catch (error) {
       console.log(error);
     }
@@ -103,7 +106,7 @@ const Home = () => {
               )}
             </div>
             <h2 className="font-bold text-[#0F1D40] text-[3.5rem]">
-              {balanceVisibility ? " ₦ 2,000,000" : "****"}
+              {balanceVisibility ? `₦ ${balance.toLocaleString()}` : "****"}
             </h2>
             <button
               type="button"
