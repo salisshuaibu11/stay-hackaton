@@ -42,6 +42,7 @@ const Home = ({ banks }) => {
   const [withdrawStep, setWidthdrawStep] = useState(1);
   const [payout, setPayout] = useState(null);
   const [buttonLoading, setButtonLoading] = useState(false);
+  const [payoutLoading, setPayoutLoading] = useState(false);
 
   const toggleBalanceVisibility = () => {
     setBalanceVisibility(!balanceVisibility);
@@ -151,20 +152,52 @@ const Home = ({ banks }) => {
       account_number: account,
       amount,
     };
-
+    if (Number(amount) < 1000) {
+      toast.error("Sorry you cannot withdraw below 1 thousand Naira");
+      return;
+    }
     setButtonLoading(true);
 
     try {
-      // const { data } = await api.post("/wallet/withdraw", userDetails);
-      // toast.success(data.message);
-      if (payout) {
+      const { data } = await api.post("/wallet/withdraw", userDetails);
+      toast.success(data.message);
+      if (!payout) {
         setConfirmPaymentOpen(true);
+      } else {
+        setAccount("");
+        setBankCode("");
+        setBankName("");
+        setName("");
+        setWidthdrawStep(1);
+        setAmount("");
+        setOpen(false);
+        console.log("Guy");
       }
     } catch (error) {
       const message = error?.response.data.message;
       toast.error(message);
     } finally {
       setButtonLoading(false);
+    }
+  };
+
+  const closeModal = () => {
+    setConfirmPaymentOpen(false);
+  };
+
+  const savePayout = async () => {
+    setPayoutLoading(true);
+    try {
+      await api.put("/payout/save");
+      const savedPayout = await api.get(`payout`);
+      setPayout(savedPayout.data.data);
+      toast.success("Bank Details Stored Successfully");
+      closeModal();
+    } catch (error) {
+      console.log(error);
+      toast.error("An error occured");
+    } finally {
+      setPayoutLoading(false);
     }
   };
 
@@ -328,7 +361,10 @@ const Home = ({ banks }) => {
                             <button
                               type="button"
                               className="rounded-md bg-indigo-700 text-indigo-200 hover:text-white focus:outline-none focus:ring-2 focus:ring-white"
-                              onClick={() => setOpen(false)}
+                              onClick={() => {
+                                setOpen(false);
+                                setWidthdrawStep(1);
+                              }}
                             >
                               <span className="sr-only">Close panel</span>
                               <XIcon className="h-6 w-6" aria-hidden="true" />
@@ -518,12 +554,14 @@ const Home = ({ banks }) => {
       {/* Confirm Payment Modal */}
       <ConfirmPayment
         isOpen={confirmPaymentOpen}
-        modalHandler={confirmPaymentHandler}
+        save={savePayout}
         name={name}
         bankCode={bankCode}
         bankName={bankName}
         account={account}
         amount={amount}
+        closeModal={closeModal}
+        loading={payoutLoading}
       />
       <Toaster />
     </div>
