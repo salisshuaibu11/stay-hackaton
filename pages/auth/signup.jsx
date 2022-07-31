@@ -80,7 +80,7 @@ export default function Signup() {
               <h3 className="text-[#0F1D40] font-semibold text-4xl">Signup</h3>
               <h3 className="text-[#656E85] text-lg">
                 Already have an account?
-                <Link href="/auth/signup" passHref>
+                <Link href="/auth/login" passHref>
                   <a className="text-[#7B61FF] font-semibold"> Login.</a>
                 </Link>
               </h3>
