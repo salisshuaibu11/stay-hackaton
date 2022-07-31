@@ -74,11 +74,13 @@ export default function Signup() {
             </div>
           </div>
         </div>
-        <div className="w-[50%] flex flex-col px-8 pt-20 bg-[#F9F8FF]">
+        <div className="w-full md:w-[50%] flex flex-col px-4 md:px-8 pt-20 bg-[#F9F8FF]">
           <div>
             <div className="flex justify-between items-center">
-              <h3 className="text-[#0F1D40] font-semibold text-4xl">Signup</h3>
-              <h3 className="text-[#656E85] text-lg">
+              <h3 className="text-[#0F1D40] font-semibold text-2xl md:text-4xl">
+                Signup
+              </h3>
+              <h3 className="text-[#656E85] text-base md:text-lg">
                 Already have an account?
                 <Link href="/auth/login" passHref>
                   <a className="text-[#7B61FF] font-semibold"> Login.</a>
