@@ -14,6 +14,7 @@ import OnBoarding from "../components/onBoarding";
 import api from "../services/api";
 import toast, { Toaster } from "react-hot-toast";
 import Confirm from "../components/Confirm";
+import PersonalAccount from "@/components/PersonAccount";
 
 const Home = ({ banks }) => {
   const [balanceVisibility, setBalanceVisibility] = useState(true);
@@ -37,7 +38,7 @@ const Home = ({ banks }) => {
   const [bankName, setBankName] = useState("");
   const [loadingName, setLoadingName] = useState(false);
   const [bankCode, setBankCode] = useState("");
-  const [withdrawStep, setWidthdrawStep] = useState(1);
+  const [withdrawStep, setWidthdrawStep] = useState(3);
 
   const toggleBalanceVisibility = () => {
     setBalanceVisibility(!balanceVisibility);
@@ -429,6 +430,14 @@ const Home = ({ banks }) => {
                             account={account}
                             amount={amount}
                           />
+                        )}
+                        {withdrawStep === 3 && (
+                          <div className="absolute inset-0">
+                            <h3 className="text-3xl text-[#0F1D40] font-semibold">
+                              Fill in Your Account Details
+                            </h3>
+                            <PersonalAccount />
+                          </div>
                         )}
                         {/* /End replace */}
                       </div>
