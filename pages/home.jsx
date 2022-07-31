@@ -15,6 +15,7 @@ import api from "../services/api";
 import toast, { Toaster } from "react-hot-toast";
 import Confirm from "../components/Confirm";
 import PersonalAccount from "@/components/PersonAccount";
+import FundAccount from "@/components/FundAccount";
 
 const Home = ({ banks }) => {
   const [balanceVisibility, setBalanceVisibility] = useState(true);
@@ -39,6 +40,7 @@ const Home = ({ banks }) => {
   const [loadingName, setLoadingName] = useState(false);
   const [bankCode, setBankCode] = useState("");
   const [withdrawStep, setWidthdrawStep] = useState(3);
+  const [payout, setPayout] = useState(null);
 
   const toggleBalanceVisibility = () => {
     setBalanceVisibility(!balanceVisibility);
@@ -300,6 +302,16 @@ const Home = ({ banks }) => {
                             <h3 className="text-3xl text-[#0F1D40] font-semibold">
                               Fill in Your Account Details
                             </h3>
+                            <div>
+                              <PersonalAccount />
+                              <div className="flex items-center mt-4">
+                                <div className="h-px w-full bg-[#E2E4E8]"></div>
+                                <p className="mx-2 text-[#212121] text-lg font-medium">
+                                  Or
+                                </p>
+                                <div className="h-px w-full bg-[#E2E4E8]"></div>
+                              </div>
+                            </div>
                             <div className="space-y-6 mt-10">
                               <div>
                                 <label
@@ -410,7 +422,7 @@ const Home = ({ banks }) => {
                                 </div>
                               </div>
 
-                              <div>
+                              <div className="mb-4">
                                 <button
                                   type="click"
                                   onClick={confirmPaymentHandler}
@@ -432,12 +444,14 @@ const Home = ({ banks }) => {
                           />
                         )}
                         {withdrawStep === 3 && (
-                          <div className="absolute inset-0">
-                            <h3 className="text-3xl text-[#0F1D40] font-semibold">
-                              Fill in Your Account Details
-                            </h3>
-                            <PersonalAccount />
-                          </div>
+                          <FundAccount
+                            name={name}
+                            bankCode={bankCode}
+                            bankName={bankName}
+                            account={account}
+                            amount={amount}
+                            setAmount={setAmount}
+                          />
                         )}
                         {/* /End replace */}
                       </div>
