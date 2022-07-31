@@ -36,12 +36,14 @@ const Home = ({ banks }) => {
   const [bankName, setBankName] = useState("");
   const [loadingName, setLoadingName] = useState(false);
   const [bankCode, setBankCode] = useState("");
+  const [withdrawStep, setWidthdrawStep] = useState(1);
 
   const toggleBalanceVisibility = () => {
     setBalanceVisibility(!balanceVisibility);
   };
 
   const confirmPaymentHandler = () => {
+    setWidthdrawStep(2);
     setConfirmPaymentOpen(!confirmPaymentOpen);
   };
 
@@ -291,131 +293,133 @@ const Home = ({ banks }) => {
                       </div>
                       <div className="relative flex-1">
                         {/* Replace with your content */}
-                        <div className="absolute inset-0">
-                          <h3 className="text-3xl text-slate-800 font-extrabold">
-                            Fill in Your Account Details
-                          </h3>
-                          <div className="space-y-6 mt-10">
-                            <div>
-                              <label
-                                htmlFor="amount"
-                                className="block text-sm font-medium text-gray-700"
-                              >
-                                Enter Amount to Withdraw
-                              </label>
-                              <div className="mt-1">
-                                <input
-                                  id="amount"
-                                  name="amount"
-                                  type="amount"
-                                  {...register("amount", { required: true })}
-                                  value={amount}
-                                  onChange={(e) => setAmount(e.target.value)}
-                                  autoComplete="amount"
-                                  required
-                                  placeholder="eg. N 300"
-                                  className="appearance-none block w-full px-3 rounded border border-gray-300 shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 text-base h-12"
-                                />
-                              </div>
-                            </div>
-
-                            <div className=" mt-8">
-                              <label
-                                htmlFor="account"
-                                className="block text-sm font-medium text-gray-700"
-                              >
-                                Recipient&apos;s Account Number
-                              </label>
-                              <div className="mt-1">
-                                <input
-                                  id="account"
-                                  name="account"
-                                  type="account"
-                                  autoComplete="account"
-                                  {...register("account", {
-                                    required: true,
-                                    minLength: 10,
-                                  })}
-                                  value={account}
-                                  onChange={(e) => setAccount(e.target.value)}
-                                  required
-                                  placeholder="123456789"
-                                  className="appearance-none block w-full px-3 border border-gray-300 shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 text-base h-12 rounded"
-                                />
-                                {errors.account && (
-                                  <p className="text-red-600">
-                                    Please check the account number
-                                  </p>
-                                )}
-                              </div>
-                            </div>
-
-                            <div className=" mt-8">
-                              <label
-                                htmlFor="account"
-                                className="block text-sm font-medium text-gray-700"
-                              >
-                                Recipient&apos;s Bank
-                              </label>
-                              <div className="mt-1 relative shadow-sm border border-gray-200 h-12 rounded">
-                                <div className="absolute inset-y-0 left-0 pl-3 pr-3 flex items-center pointer-events-none">
-                                  <LibraryIcon className="w-6 h-6 text-gray-500" />
-                                </div>
-                                <select
-                                  id="currency"
-                                  name="currency"
-                                  onChange={(e) => {
-                                    getAccountName(e.target.value);
-                                    const bank = banks.find(
-                                      (bank) => bank.code === e.target.value
-                                    );
-                                    setBankName(bank.name);
-                                    setBankCode(bank.code);
-                                  }}
-                                  className="focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 h-full py-2 w-full pl-10 border-transparent bg-transparent text-gray-500 sm:text-sm rounded-md"
+                        {withdrawStep === 1 && (
+                          <div className="absolute inset-0">
+                            <h3 className="text-3xl text-[#0F1D40] font-semibold">
+                              Fill in Your Account Details
+                            </h3>
+                            <div className="space-y-6 mt-10">
+                              <div>
+                                <label
+                                  htmlFor="amount"
+                                  className="block text-sm font-medium text-gray-700"
                                 >
-                                  {banks.map((bank) => (
-                                    <option value={bank.code} key={bank.name}>
-                                      {bank.name}
-                                    </option>
-                                  ))}
-                                </select>
+                                  Enter Amount to Withdraw
+                                </label>
+                                <div className="mt-1">
+                                  <input
+                                    id="amount"
+                                    name="amount"
+                                    type="amount"
+                                    {...register("amount", { required: true })}
+                                    value={amount}
+                                    onChange={(e) => setAmount(e.target.value)}
+                                    autoComplete="amount"
+                                    required
+                                    placeholder="eg. N 300"
+                                    className="appearance-none block w-full px-3 rounded border border-gray-300 shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 text-base h-12"
+                                  />
+                                </div>
                               </div>
-                            </div>
 
-                            <div className=" mt-8">
-                              <label
-                                htmlFor="name"
-                                className="block text-sm font-medium text-gray-700"
-                              >
-                                Recipient&apos;s Account Name
-                              </label>
-                              <div className="mt-1">
-                                <input
-                                  id="name"
-                                  name="name"
-                                  type="name"
-                                  autoComplete="name"
-                                  value={loadingName ? "Loading..." : name}
-                                  onChange={(e) => setName(e.target.value)}
-                                  {...register("name")}
-                                  required
-                                  className="appearance-none cursor-not-allowed block w-full px-3 border text-slate-600 bg-gray-100 border-gray-300 shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 text-base h-12"
-                                />
+                              <div className=" mt-8">
+                                <label
+                                  htmlFor="account"
+                                  className="block text-sm font-medium text-gray-700"
+                                >
+                                  Recipient&apos;s Account Number
+                                </label>
+                                <div className="mt-1">
+                                  <input
+                                    id="account"
+                                    name="account"
+                                    type="account"
+                                    autoComplete="account"
+                                    {...register("account", {
+                                      required: true,
+                                      minLength: 10,
+                                    })}
+                                    value={account}
+                                    onChange={(e) => setAccount(e.target.value)}
+                                    required
+                                    placeholder="123456789"
+                                    className="appearance-none block w-full px-3 border border-gray-300 shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 text-base h-12 rounded"
+                                  />
+                                  {errors.account && (
+                                    <p className="text-red-600">
+                                      Please check the account number
+                                    </p>
+                                  )}
+                                </div>
                               </div>
-                            </div>
 
-                            <div>
-                              <button
-                                type="click"
-                                onClick={confirmPaymentHandler}
-                                className="flex justify-center items-center w-full shadow-sm h-16 rounded uppercase px-6 border border-transparent text-base font-medium text-white bg-[#7B61FF] hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-                              >
-                                withdraw
-                              </button>
+                              <div className=" mt-8">
+                                <label
+                                  htmlFor="account"
+                                  className="block text-sm font-medium text-gray-700"
+                                >
+                                  Recipient&apos;s Bank
+                                </label>
+                                <div className="mt-1 relative shadow-sm border border-gray-200 h-12 rounded">
+                                  <div className="absolute inset-y-0 left-0 pl-3 pr-3 flex items-center pointer-events-none">
+                                    <LibraryIcon className="w-6 h-6 text-gray-500" />
+                                  </div>
+                                  <select
+                                    id="currency"
+                                    name="currency"
+                                    onChange={(e) => {
+                                      getAccountName(e.target.value);
+                                      const bank = banks.find(
+                                        (bank) => bank.code === e.target.value
+                                      );
+                                      setBankName(bank.name);
+                                      setBankCode(bank.code);
+                                    }}
+                                    className="focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 h-full py-2 w-full pl-10 border-transparent bg-transparent text-gray-500 sm:text-sm rounded-md"
+                                  >
+                                    {banks.map((bank) => (
+                                      <option value={bank.code} key={bank.name}>
+                                        {bank.name}
+                                      </option>
+                                    ))}
+                                  </select>
+                                </div>
+                              </div>
+
+                              <div className=" mt-8">
+                                <label
+                                  htmlFor="name"
+                                  className="block text-sm font-medium text-gray-700"
+                                >
+                                  Recipient&apos;s Account Name
+                                </label>
+                                <div className="mt-1">
+                                  <input
+                                    id="name"
+                                    name="name"
+                                    type="name"
+                                    autoComplete="name"
+                                    value={loadingName ? "Loading..." : name}
+                                    onChange={(e) => setName(e.target.value)}
+                                    {...register("name")}
+                                    required
+                                    className="appearance-none cursor-not-allowed block w-full px-3 border text-slate-600 bg-gray-100 border-gray-300 shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 text-base h-12"
+                                  />
+                                </div>
+                              </div>
+
+                              <div>
+                                <button
+                                  type="click"
+                                  onClick={confirmPaymentHandler}
+                                  className="flex justify-center items-center w-full shadow-sm h-16 rounded uppercase px-6 border border-transparent text-base font-medium text-white bg-[#7B61FF] hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                                >
+                                  withdraw
+                                </button>
+                              </div>
                             </div>
                           </div>
-                        </div>
+                        )}
                         {/* /End replace */}
                       </div>
                     </div>
