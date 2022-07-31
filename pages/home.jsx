@@ -41,6 +41,7 @@ const Home = ({ banks }) => {
   const [bankCode, setBankCode] = useState("");
   const [withdrawStep, setWidthdrawStep] = useState(1);
   const [payout, setPayout] = useState(null);
+  const [buttonLoading, setButtonLoading] = useState(false);
 
   const toggleBalanceVisibility = () => {
     setBalanceVisibility(!balanceVisibility);
@@ -132,6 +133,38 @@ const Home = ({ banks }) => {
       const message = error.response.data.message;
       toast(message);
       setLoadingName(false);
+    }
+  };
+
+  const setPersonalAccount = () => {
+    setAccount(payout.accountNumber);
+    setBankCode(payout.bankCode);
+    setBankName(payout.bankName);
+    setName(payout.accountName);
+    setWidthdrawStep(3);
+  };
+
+  const withdrawalHandler = async () => {
+    const userDetails = {
+      bank_name: bankName,
+      bank_code: bankCode,
+      account_number: account,
+      amount,
+    };
+
+    setButtonLoading(true);
+
+    try {
+      // const { data } = await api.post("/wallet/withdraw", userDetails);
+      // toast.success(data.message);
+      if (payout) {
+        setConfirmPaymentOpen(true);
+      }
+    } catch (error) {
+      const message = error?.response.data.message;
+      toast.error(message);
+    } finally {
+      setButtonLoading(false);
     }
   };
 
@@ -315,6 +348,7 @@ const Home = ({ banks }) => {
                                 <PersonalAccount
                                   accountNumber={payout.accountNumber}
                                   accountName={payout.accountName}
+                                  setPersonalAccount={setPersonalAccount}
                                 />
                                 <div className="flex items-center mt-4">
                                   <div className="h-px w-full bg-[#E2E4E8]"></div>
@@ -454,6 +488,8 @@ const Home = ({ banks }) => {
                             bankName={bankName}
                             account={account}
                             amount={amount}
+                            withdrawalHandler={withdrawalHandler}
+                            loading={buttonLoading}
                           />
                         )}
                         {withdrawStep === 3 && (
@@ -464,6 +500,8 @@ const Home = ({ banks }) => {
                             account={account}
                             amount={amount}
                             setAmount={setAmount}
+                            withdrawalHandler={withdrawalHandler}
+                            loading={buttonLoading}
                           />
                         )}
                         {/* /End replace */}

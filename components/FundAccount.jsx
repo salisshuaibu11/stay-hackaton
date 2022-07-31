@@ -1,6 +1,7 @@
 import React from "react";
 import PersonalAccount from "./PersonAccount";
 import Checker from "./Checker";
+import Spinner from "./Spinner";
 
 export default function FundAccount({
   name,
@@ -8,6 +9,8 @@ export default function FundAccount({
   account,
   amount,
   setAmount,
+  withdrawalHandler,
+  loading,
 }) {
   return (
     <div className="absolute inset-0">
@@ -44,10 +47,11 @@ export default function FundAccount({
       />
       <div className=" mt-16">
         <button
+          onClick={withdrawalHandler}
           type="button"
           className="flex justify-center items-center w-full shadow-sm h-16 rounded uppercase px-6 border border-transparent text-base font-medium text-white bg-[#7B61FF] hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
         >
-          withdraw
+          {loading ? <Spinner /> : "withdraw"}
         </button>
       </div>
     </div>
