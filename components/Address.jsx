@@ -13,7 +13,7 @@ const AddressComponent = ({ address, generateAddress, back }) => {
     }, 5000);
   };
   return (
-    <div className="flex flex-col py-6 px-10 min-w-[22.8rem] bg-[#F9F8FF] border-2 border-[#A673EF] rounded-2xl my-14">
+    <div className="flex flex-col py-6 px-10 max-w-[22.8rem] bg-[#F9F8FF] border-2 border-[#A673EF] rounded-2xl my-14">
       <Toaster />
       <div className="flex justify-center items-center">
         <QRCode value={address} />
