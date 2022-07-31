@@ -39,7 +39,7 @@ const Home = ({ banks }) => {
   const [bankName, setBankName] = useState("");
   const [loadingName, setLoadingName] = useState(false);
   const [bankCode, setBankCode] = useState("");
-  const [withdrawStep, setWidthdrawStep] = useState(3);
+  const [withdrawStep, setWidthdrawStep] = useState(1);
   const [payout, setPayout] = useState(null);
 
   const toggleBalanceVisibility = () => {
@@ -78,8 +78,10 @@ const Home = ({ banks }) => {
     try {
       const value = await api.get(`/exchange/value?coin=${crypto}`);
       const balance = await api.get(`/wallet/balance`);
+      const payout = await api.get(`payout`);
       setRate(value.data.data.value / 100);
       setBalance(balance.data.data.wallet.balance);
+      setPayout(payout.data.data);
     } catch (error) {
       console.log(error);
     }
