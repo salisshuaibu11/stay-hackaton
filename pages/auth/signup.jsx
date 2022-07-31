@@ -5,8 +5,8 @@ import { useForm } from "react-hook-form";
 
 import Spinner from "@/components/Spinner";
 
-import Image from "next/image"
-import Link from "next/link"
+import Image from "next/image";
+import Link from "next/link";
 import api from "@/services/api";
 import toast, { Toaster } from "react-hot-toast";
 
@@ -17,7 +17,11 @@ export default function Signup() {
   const [passwordVisibility, setPasswordVisibility] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
 
-  const { register, handleSubmit, formState: { errors } } = useForm();
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm();
   const router = useRouter();
 
   const togglePasswordVisibility = () => {
@@ -33,62 +37,66 @@ export default function Signup() {
       const { data } = response;
 
       if (data) {
-        localStorage.setItem("user-data", JSON.stringify(data.data))
+        localStorage.setItem("user-data", JSON.stringify(data.data));
         toast(data.message, {
-          icon: "👏"
+          icon: "👏",
         });
 
         router.push("/home");
-      };
+      }
 
       setIsLoading(false);
     } catch (error) {
       setIsLoading(false);
       toast.error(error.message);
     }
-  }
+  };
 
   return (
     <>
       <div className="min-h-screen flex">
-        <div className="flex-1 flex flex-col justify-center bg-indigo-900 py-12 px-4 sm:px-6 lg:flex-none lg:px-20 xl:px-24">
-          <div className="mx-auto w-full max-w-sm lg:w-96">
+        <div className="hidden md:w-[50%] md:flex flex-col justify-center bg-[#220D6D] py-12 px-4 sm:px-6 lg:flex-none lg:px-20 xl:px-24">
+          <div className="mx-auto w-full">
             <div>
-              <img
-                className="h-12 w-auto"
-                src="/logo.svg"
-                alt="Stay Logo"
-              />
-              <h2 className="mt-6 text-lg text-white">Create your account and get your crytocurrency in Naira.</h2>
+              <img className="h-12 w-auto" src="/logo.svg" alt="Stay Logo" />
+              <h2 className="mt-6 text-2xl font-medium text-[#F9F8FF] w-[32.8rem]">
+                Create your account and get your crytocurrency in Naira.
+              </h2>
             </div>
 
             <div className="mt-8">
-              <Image 
+              <Image
                 width={540}
                 height={476}
-                src="/loginIllustration.svg" 
+                src="/loginIllustration.svg"
                 alt="Login page illustration"
               />
             </div>
           </div>
         </div>
-        <div className="flex-1 flex flex-col mt-10 py-12 px-4 sm:px-6 lg:flex-none lg:px-20 xl:px-24">
-          <div className="mx-auto w-full max-w-sm lg:w-96">
+        <div className="w-[50%] flex flex-col px-8 pt-20 bg-[#F9F8FF]">
+          <div>
             <div className="flex justify-between items-center">
-              <h3 className="text-slate-700 font-bold text-2xl">Signup</h3>
-              <h3 className="text-gray-400">
+              <h3 className="text-[#0F1D40] font-semibold text-4xl">Signup</h3>
+              <h3 className="text-[#656E85] text-lg">
                 Already have an account?
-                <Link href="/auth/signup" passHref>
-                  <a className="text-slate-700 font-bold">{" "}Login.</a>
+                <Link href="/auth/login" passHref>
+                  <a className="text-[#7B61FF] font-semibold"> Login.</a>
                 </Link>
               </h3>
             </div>
 
             <div className="mt-8">
               <div className="mt-6">
-                <form onSubmit={handleSubmit(createAccount)} className="space-y-6">
+                <form
+                  onSubmit={handleSubmit(createAccount)}
+                  className="space-y-6"
+                >
                   <div>
-                    <label htmlFor="email" className="block text-sm font-medium text-gray-700">
+                    <label
+                      htmlFor="email"
+                      className="block text-xs font-semibold text-[#525C76]"
+                    >
                       Email address
                     </label>
                     <div className="mt-1">
@@ -96,20 +104,31 @@ export default function Signup() {
                         id="email"
                         name="email"
                         type="email"
-                        {...register("email", {required: true, pattern: /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/})}
+                        {...register("email", {
+                          required: true,
+                          pattern:
+                            /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
+                        })}
                         value={email}
-                        onChange={e => setEmail(e.target.value)}
+                        onChange={(e) => setEmail(e.target.value)}
                         autoComplete="email"
                         required
                         placeholder="stay@gmail.com"
-                        className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                        className="appearance-none md:w-[32.87rem] h-12 block w-full px-3 py-2 border border-[#E2E4E8] rounded shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 text-base font-semibold text-[#525C76]"
                       />
-                      {errors.email && <p className="text-red-500">Please check the email address</p>}
+                      {errors.email && (
+                        <p className="text-red-500">
+                          Please check the email address
+                        </p>
+                      )}
                     </div>
                   </div>
 
                   <div>
-                    <label htmlFor="name" className="block text-sm font-medium text-gray-700">
+                    <label
+                      htmlFor="name"
+                      className="block text-xs font-semibold text-[#525C76]"
+                    >
                       Fullname
                     </label>
                     <div className="mt-1">
@@ -118,45 +137,66 @@ export default function Signup() {
                         name="fullname"
                         type="fullname"
                         value={fullname}
-                        {...register("fullname", {required: true, minLength: 3})}
-                        onChange={e => setFullname(e.target.value)}
+                        {...register("fullname", {
+                          required: true,
+                          minLength: 3,
+                        })}
+                        onChange={(e) => setFullname(e.target.value)}
                         autoComplete="name"
                         required
                         placeholder="STAY"
-                        className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                        className="appearance-none md:w-[32.87rem] h-12 block w-full px-3 py-2 border border-[#E2E4E8] rounded shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 text-base font-semibold text-[#525C76]"
                       />
-                      {errors.fullname && <p className="text-red-500">Please check the name</p>}
+                      {errors.fullname && (
+                        <p className="text-red-500">Please check the name</p>
+                      )}
                     </div>
                   </div>
 
                   <div className="space-y-1">
-                    <label htmlFor="password" className="block text-sm font-medium text-gray-700">
+                    <label
+                      htmlFor="password"
+                      className="block text-xs font-semibold text-[#525C76]"
+                    >
                       Password
                     </label>
                     <div className="mt-1 relative">
-                      {passwordVisibility && <EyeIcon onClick={togglePasswordVisibility} className="absolute cursor-pointer text-slate-500 h-6 w-6 right-1 top-[7px] flex items-center" />}
-                      {!passwordVisibility && <EyeOffIcon onClick={togglePasswordVisibility} className="absolute cursor-pointer text-slate-500 h-6 w-6 right-1 top-[7px] flex items-center" />}
+                      {/* {passwordVisibility && (
+                        <EyeIcon
+                          onClick={togglePasswordVisibility}
+                          className="absolute cursor-pointer text-slate-500 h-6 w-6 right-1 top-[7px] flex items-center"
+                        />
+                      )}
+                      {!passwordVisibility && (
+                        <EyeOffIcon
+                          onClick={togglePasswordVisibility}
+                          className="absolute cursor-pointer text-slate-500 h-6 w-6 right-1 top-[7px] flex items-center"
+                        />
+                      )} */}
                       <input
                         id="password"
                         name="password"
                         type={passwordVisibility ? "text" : "password"}
                         autoComplete="password"
-                        {...register("password", {required: true})}
-
+                        {...register("password", { required: true })}
                         value={password}
                         placeholder="stay"
-                        onChange={e => setPassword(e.target.value)}
+                        onChange={(e) => setPassword(e.target.value)}
                         required
-                        className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                        className="appearance-none h-12 block w-full md:w-[32.87rem] px-3 py-2 border border-[#E2E4E8] rounded shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 text-base font-semibold text-[#525C76]"
                       />
-                      {errors.password && <p className="text-red-500">Please check the Password</p>}
+                      {errors.password && (
+                        <p className="text-red-500">
+                          Please check the Password
+                        </p>
+                      )}
                     </div>
                   </div>
 
-                  <div>
+                  <div className="mt-14">
                     <button
                       type="submit"
-                      className="flex justify-center px-16 py-2 border border-transparent text-md font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                      className="flex justify-center px-6 py-2 border border-transparent w-full  md:w-[18.8rem] font-medium text-white bg-[#7B61FF] hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 rounded shadow"
                     >
                       {isLoading ? <Spinner /> : "Create Account"}
                     </button>
@@ -169,5 +209,5 @@ export default function Signup() {
       </div>
       <Toaster />
     </>
-  )
+  );
 }

@@ -171,7 +171,6 @@ const Home = ({ banks }) => {
         setWidthdrawStep(1);
         setAmount("");
         setOpen(false);
-        console.log("Guy");
       }
     } catch (error) {
       const message = error?.response.data.message;
