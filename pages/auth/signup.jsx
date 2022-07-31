@@ -55,7 +55,7 @@ export default function Signup() {
   return (
     <>
       <div className="min-h-screen flex">
-        <div className="hidden md:w-[50%] md:flex flex-col justify-center bg-[#220D6D] py-12 px-4 sm:px-6 lg:flex-none lg:px-20 xl:px-24">
+        <div className="hidden md:w-[50%] lg:flex flex-col justify-center bg-[#220D6D] py-12 px-4 sm:px-6 lg:flex-none lg:px-20 xl:px-24">
           <div className="mx-auto w-full">
             <div>
               <img className="h-12 w-auto" src="/logo.svg" alt="Stay Logo" />
@@ -74,7 +74,7 @@ export default function Signup() {
             </div>
           </div>
         </div>
-        <div className="w-full md:w-[50%] flex flex-col px-4 md:px-8 pt-20 bg-[#F9F8FF]">
+        <div className="w-full lg:w-[50%] flex flex-col px-4  md:px-16 lg:px-8 pt-20 bg-[#F9F8FF]">
           <div>
             <div className="flex justify-between items-center">
               <h3 className="text-[#0F1D40] font-semibold text-2xl md:text-4xl">
