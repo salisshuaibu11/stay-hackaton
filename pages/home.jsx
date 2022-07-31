@@ -82,6 +82,25 @@ const Home = ({ banks }) => {
     onMount();
   }, []);
 
+  useEffect(() => {
+    let timer = setInterval(async function () {
+      try {
+        const newBalance = await api.get(`/wallet/balance`);
+        if (newBalance.data.data.wallet.balance > balance) {
+          setBalance(newBalance.data.data.wallet.balance);
+          toast.success("Your account has been credited");
+        } else {
+          setBalance(newBalance.data.data.wallet.balance);
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    }, 3000);
+    return () => {
+      clearInterval(timer);
+    };
+  }, [balance]);
+
   const calculateFiat = () => {
     return Number(price) * rate;
   };
