@@ -35,7 +35,6 @@ export default function Home() {
             <div className="hidden md:flex">
              <Link href="/auth/login" passHref>
               <a
-                href='/auth/login'
                 className="inline-flex items-center px-16 py-2 border border-gray-300 shadow-sm text-base text-white font-medium rounded-md focus:outline-none"
               >
                 Login
@@ -75,7 +74,6 @@ export default function Home() {
                 </div>
                 <Link href="/auth/login" passHref>
                   <a
-                    href="/auth/login"
                     className="inline-flex mx-2 my-3 items-center px-16 py-2 border border-gray-300 shadow-sm text-base text-white font-medium rounded-md focus:outline-none"
                   >
                   Login
@@ -105,7 +103,6 @@ export default function Home() {
                     <div className="flex flex-wrap items-center space-x-6">
                       <Link href="/auth/signup" passHref>
                         <a
-                          href="/auth/signup"
                           className="inline-flex items-center px-16 py-2 border border-transparent text-base font-medium shadow-sm text-white bg-indigo-500 hover:bg-indigo-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
                         >
                           Signup
