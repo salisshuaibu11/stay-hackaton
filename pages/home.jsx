@@ -13,9 +13,10 @@ import { banks } from "../utils/bankList";
 import ConfirmPayment from "../components/ConfirmPayment";
 import OnBoarding from "../components/onBoarding";
 import api from "../services/api";
+import toast, { Toaster } from "react-hot-toast";
 
 const Home = () => {
-  const [balanceVisibility, setBalanceVisibility] = useState(false);
+  const [balanceVisibility, setBalanceVisibility] = useState(true);
   const [open, setOpen] = useState(false);
   const [confirmPaymentOpen, setConfirmPaymentOpen] = useState(false);
   const [loading, setIsLoading] = useState(false);
@@ -24,6 +25,7 @@ const Home = () => {
   const [rate, setRate] = useState(0);
   const [balance, setBalance] = useState(0);
   const [price, setPrice] = useState(0);
+  const [address, setAddress] = useState("");
 
   const toggleBalanceVisibility = () => {
     setBalanceVisibility(!balanceVisibility);
@@ -33,12 +35,18 @@ const Home = () => {
     setConfirmPaymentOpen(!confirmPaymentOpen);
   };
 
-  const generateAddressHandler = () => {
+  const generateAddressHandler = async () => {
     setIsLoading(true);
-    setTimeout(() => {
-      setIsLoading(false);
+    try {
+      const address = await api.post("/address/generate", { coin: crypto });
+      setAddress(address.data.data.address);
+      toast.success(address.data.message);
       setShowQR(true);
-    }, 5000);
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   const handleCrypto = async (e) => {
@@ -70,6 +78,7 @@ const Home = () => {
 
   return (
     <div className="min-h-screen overflow-hidden">
+      <Toaster />
       <nav
         className="relative w-screen py-3 px-8 bg-gray-50 flex items-center justify-between border-b-2"
         aria-label="Global"
@@ -132,7 +141,13 @@ const Home = () => {
               <img src="/loading.gif" className="mt-10" />
             </div>
           )}
-          {showQR && !loading && <QRCodeComponent />}
+          {showQR && !loading && (
+            <QRCodeComponent
+              address={address}
+              generateAddress={generateAddressHandler}
+              back={setShowQR}
+            />
+          )}
           {!showQR && !loading && (
             <form className="text-center mt-8 w-[30.6rem]">
               <h4 className="text-[#0F1D40] text-lg">
