@@ -47,8 +47,14 @@ const Home = ({ banks }) => {
   };
 
   const confirmPaymentHandler = () => {
-    setWidthdrawStep(2);
-    setConfirmPaymentOpen(!confirmPaymentOpen);
+    if (account && bankCode && amount && balance > Number(amount)) {
+      setWidthdrawStep(2);
+    } else if (balance < Number(amount)) {
+      toast.error("Insufficient Balance");
+    } else {
+      toast.error("Please Fill in all your details");
+    }
+    // setConfirmPaymentOpen(!confirmPaymentOpen);
   };
 
   const generateAddressHandler = async () => {
@@ -304,16 +310,21 @@ const Home = ({ banks }) => {
                             <h3 className="text-3xl text-[#0F1D40] font-semibold">
                               Fill in Your Account Details
                             </h3>
-                            <div>
-                              <PersonalAccount />
-                              <div className="flex items-center mt-4">
-                                <div className="h-px w-full bg-[#E2E4E8]"></div>
-                                <p className="mx-2 text-[#212121] text-lg font-medium">
-                                  Or
-                                </p>
-                                <div className="h-px w-full bg-[#E2E4E8]"></div>
+                            {payout && (
+                              <div>
+                                <PersonalAccount
+                                  accountNumber={payout.accountNumber}
+                                  accountName={payout.accountName}
+                                />
+                                <div className="flex items-center mt-4">
+                                  <div className="h-px w-full bg-[#E2E4E8]"></div>
+                                  <p className="mx-2 text-[#212121] text-lg font-medium">
+                                    Or
+                                  </p>
+                                  <div className="h-px w-full bg-[#E2E4E8]"></div>
+                                </div>
                               </div>
-                            </div>
+                            )}
                             <div className="space-y-6 mt-10">
                               <div>
                                 <label
@@ -430,7 +441,7 @@ const Home = ({ banks }) => {
                                   onClick={confirmPaymentHandler}
                                   className="flex justify-center items-center w-full shadow-sm h-16 rounded uppercase px-6 border border-transparent text-base font-medium text-white bg-[#7B61FF] hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
                                 >
-                                  withdraw
+                                  Proceed
                                 </button>
                               </div>
                             </div>
