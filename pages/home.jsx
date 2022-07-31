@@ -13,6 +13,7 @@ import ConfirmPayment from "../components/ConfirmPayment";
 import OnBoarding from "../components/onBoarding";
 import api from "../services/api";
 import toast, { Toaster } from "react-hot-toast";
+import Confirm from "../components/Confirm";
 
 const Home = ({ banks }) => {
   const [balanceVisibility, setBalanceVisibility] = useState(true);
@@ -275,8 +276,8 @@ const Home = ({ banks }) => {
                   leaveFrom="translate-x-0"
                   leaveTo="translate-x-full"
                 >
-                  <Dialog.Panel className="pointer-events-auto w-screen max-w-[40.8rem]">
-                    <div className="flex h-full flex-col overflow-y-scroll bg-white shadow-xl px-16 pt-12 pb-4">
+                  <Dialog.Panel className="pointer-events-auto w-screen max-w-full  md:max-w-[40.8rem]">
+                    <div className="flex h-full flex-col overflow-y-scroll bg-white shadow-xl px-4 md:px-16 pt-12 pb-4">
                       <div className="px-4">
                         <div className="flex items-center justify-end">
                           <div className="ml-3 flex h-7 items-center">
@@ -419,6 +420,15 @@ const Home = ({ banks }) => {
                               </div>
                             </div>
                           </div>
+                        )}
+                        {withdrawStep === 2 && (
+                          <Confirm
+                            name={name}
+                            bankCode={bankCode}
+                            bankName={bankName}
+                            account={account}
+                            amount={amount}
+                          />
                         )}
                         {/* /End replace */}
                       </div>
