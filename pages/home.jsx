@@ -225,7 +225,7 @@ const Home = ({ banks }) => {
       </nav>
       <main className="flex-col">
         <div className="flex-1 flex justify-center my-6">
-          <div className="bg-[#ECE8FF] py-6 px-16 text-center border-2 min-w-[28.75rem] min-h-[17rem] border-[#8247E5] rounded-lg my-8">
+          <div className="bg-[#ECE8FF] py-3 md:py-6 px-6 md:px-16 text-center border-2 w-full mx-4 lg:mx-0 md:max-w-[28.75rem] md:min-h-[17rem] border-[#8247E5] rounded-lg my-8">
             <div className="flex justify-between items-center">
               <span className="text-[#525C76] font-medium text-[1.75rem]">
                 Balance
@@ -258,7 +258,7 @@ const Home = ({ banks }) => {
         </div>
         <div className="flex-1 flex justify-center min-h-[34.3rem] bg-[#ECE8FF]">
           {loading && (
-            <div className="flex flex-col items-center mt-10">
+            <div className="flex flex-col items-center mt-10 mx-5">
               <p className="font-medium text-xl text-[#0F1D40] text-center">
                 A unique address is being generated for you...
               </p>
@@ -273,7 +273,7 @@ const Home = ({ banks }) => {
             />
           )}
           {!showQR && !loading && (
-            <form className="text-center mt-8 w-[30.6rem]">
+            <form className="text-center mt-8 w-full mx-6 md:w-[30.6rem]">
               <h4 className="text-[#0F1D40] text-lg">
                 1 {`${crypto}`} ={" "}
                 <span className="font-semibold">₦{rate.toLocaleString()}</span>
