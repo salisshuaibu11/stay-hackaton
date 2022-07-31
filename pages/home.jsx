@@ -273,9 +273,9 @@ const Home = ({ banks }) => {
                   leaveFrom="translate-x-0"
                   leaveTo="translate-x-full"
                 >
-                  <Dialog.Panel className="pointer-events-auto w-screen max-w-md">
-                    <div className="flex h-full flex-col overflow-y-scroll bg-white shadow-xl">
-                      <div className="py-6 px-4 sm:px-6">
+                  <Dialog.Panel className="pointer-events-auto w-screen max-w-[40.8rem]">
+                    <div className="flex h-full flex-col overflow-y-scroll bg-white shadow-xl px-16 pt-12 pb-4">
+                      <div className="px-4">
                         <div className="flex items-center justify-end">
                           <div className="ml-3 flex h-7 items-center">
                             <button
@@ -289,9 +289,9 @@ const Home = ({ banks }) => {
                           </div>
                         </div>
                       </div>
-                      <div className="relative flex-1 py-6 px-4 sm:px-6">
+                      <div className="relative flex-1">
                         {/* Replace with your content */}
-                        <div className="absolute inset-0 py-6 px-4 sm:px-6">
+                        <div className="absolute inset-0">
                           <h3 className="text-3xl text-slate-800 font-extrabold">
                             Fill in Your Account Details
                           </h3>
@@ -314,12 +314,12 @@ const Home = ({ banks }) => {
                                   autoComplete="amount"
                                   required
                                   placeholder="eg. N 300"
-                                  className="appearance-none block w-full px-3 py-2 border border-gray-300 shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                                  className="appearance-none block w-full px-3 rounded border border-gray-300 shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 text-base h-12"
                                 />
                               </div>
                             </div>
 
-                            <div>
+                            <div className=" mt-8">
                               <label
                                 htmlFor="account"
                                 className="block text-sm font-medium text-gray-700"
@@ -340,7 +340,7 @@ const Home = ({ banks }) => {
                                   onChange={(e) => setAccount(e.target.value)}
                                   required
                                   placeholder="123456789"
-                                  className="appearance-none block w-full px-3 py-2 border border-gray-300 shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                                  className="appearance-none block w-full px-3 border border-gray-300 shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 text-base h-12 rounded"
                                 />
                                 {errors.account && (
                                   <p className="text-red-600">
@@ -350,8 +350,14 @@ const Home = ({ banks }) => {
                               </div>
                             </div>
 
-                            <div>
-                              <div className="mt-1 relative shadow-sm border border-gray-200">
+                            <div className=" mt-8">
+                              <label
+                                htmlFor="account"
+                                className="block text-sm font-medium text-gray-700"
+                              >
+                                Recipient&apos;s Bank
+                              </label>
+                              <div className="mt-1 relative shadow-sm border border-gray-200 h-12 rounded">
                                 <div className="absolute inset-y-0 left-0 pl-3 pr-3 flex items-center pointer-events-none">
                                   <LibraryIcon className="w-6 h-6 text-gray-500" />
                                 </div>
@@ -377,7 +383,7 @@ const Home = ({ banks }) => {
                               </div>
                             </div>
 
-                            <div>
+                            <div className=" mt-8">
                               <label
                                 htmlFor="name"
                                 className="block text-sm font-medium text-gray-700"
@@ -394,7 +400,7 @@ const Home = ({ banks }) => {
                                   onChange={(e) => setName(e.target.value)}
                                   {...register("name")}
                                   required
-                                  className="appearance-none cursor-not-allowed block w-full px-3 py-2 border text-slate-600 bg-gray-100 border-gray-300 shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                                  className="appearance-none cursor-not-allowed block w-full px-3 border text-slate-600 bg-gray-100 border-gray-300 shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 text-base h-12"
                                 />
                               </div>
                             </div>
@@ -403,7 +409,7 @@ const Home = ({ banks }) => {
                               <button
                                 type="click"
                                 onClick={confirmPaymentHandler}
-                                className="flex justify-center uppercase px-16 py-2 border border-transparent text-md font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                                className="flex justify-center items-center w-full shadow-sm h-16 rounded uppercase px-6 border border-transparent text-base font-medium text-white bg-[#7B61FF] hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
                               >
                                 withdraw
                               </button>
