@@ -1,18 +1,18 @@
-import { Fragment, useState } from 'react';
-import { Dialog, Transition } from '@headlessui/react';
-import { XIcon } from '@heroicons/react/solid';
-import api from '@/services/api';
-import toast, { Toaster } from 'react-hot-toast';
-import Spinner from './Spinner';
+import { Fragment, useState } from "react";
+import { Dialog, Transition } from "@headlessui/react";
+import { XIcon } from "@heroicons/react/solid";
+import api from "@/services/api";
+import toast, { Toaster } from "react-hot-toast";
+import Spinner from "./Spinner";
 
-export default function ConfirmPayment({ 
-  isOpen, 
-  modalHandler, 
-  name, 
-  bankName, 
-  bankCode, 
-  account, 
-  amount 
+export default function ConfirmPayment({
+  isOpen,
+  modalHandler,
+  name,
+  bankName,
+  bankCode,
+  account,
+  amount,
 }) {
   const [loading, setLoading] = useState(false);
 
@@ -21,22 +21,22 @@ export default function ConfirmPayment({
       bank_name: bankName,
       bank_code: bankCode,
       account_number: account,
-      amount
+      amount,
     };
 
     setLoading(true);
 
     try {
-      const {data} = await api.post("/wallet/withdraw", userDetails);
-
+      const { data } = await api.post("/wallet/withdraw", userDetails);
+      modalHandler();
       setLoading(false);
-
+      toast.success(data.message);
     } catch (error) {
       setLoading(false);
       const message = error?.response.data.message;
       toast.error(message);
     }
-  }
+  };
 
   return (
     <>
@@ -69,27 +69,47 @@ export default function ConfirmPayment({
                   <div>
                     <div>
                       <div className="flex justify-between items-center mb-5">
-                        <Dialog.Title as="h3" className="text-lg leading-6 font-medium text-gray-900">
+                        <Dialog.Title
+                          as="h3"
+                          className="text-lg leading-6 font-medium text-gray-900"
+                        >
                           Confirm Withdrawal
                         </Dialog.Title>
-                        <XIcon className='w-6 h-6 cursor-pointer' onClick={modalHandler}/>
+                        <XIcon
+                          className="w-6 h-6 cursor-pointer"
+                          onClick={modalHandler}
+                        />
                       </div>
                       <form className="mt-2">
-                        <div className='flex w-full items-center'>
-                          <label className='bg-gray-200 w-[155px] py-2 px-4'>Account Name</label>
-                          <p className='bg-transparent py-2 px-2 flex-1'>{name}</p>
+                        <div className="flex w-full items-center">
+                          <label className="bg-gray-200 w-[155px] py-2 px-4">
+                            Account Name
+                          </label>
+                          <p className="bg-transparent py-2 px-2 flex-1">
+                            {name}
+                          </p>
                         </div>
-                        <div className='flex w-full items-center'>
-                          <label className='bg-gray-200 w-[155px] py-2 px-4'>Bank</label>
-                          <p className='bg-transparent py-2 px-2 flex-1'>{bankName}</p>
+                        <div className="flex w-full items-center">
+                          <label className="bg-gray-200 w-[155px] py-2 px-4">
+                            Bank
+                          </label>
+                          <p className="bg-transparent py-2 px-2 flex-1">
+                            {bankName}
+                          </p>
                         </div>
-                        <div className='flex w-full items-center'>
-                          <label className='bg-gray-200 w-[155px] py-2 px-4'>Account Number</label>
-                          <p className='bg-white py-2 px-2 flex-1'>{account}</p>
+                        <div className="flex w-full items-center">
+                          <label className="bg-gray-200 w-[155px] py-2 px-4">
+                            Account Number
+                          </label>
+                          <p className="bg-white py-2 px-2 flex-1">{account}</p>
                         </div>
-                        <div className='flex w-full items-center'>
-                          <label className='bg-gray-200 w-[155px] py-2 px-4'>Amount</label>
-                          <p className='bg-transparent py-2 px-2 flex-1'>{amount}</p>
+                        <div className="flex w-full items-center">
+                          <label className="bg-gray-200 w-[155px] py-2 px-4">
+                            Amount
+                          </label>
+                          <p className="bg-transparent py-2 px-2 flex-1">
+                            {amount}
+                          </p>
                         </div>
                       </form>
                     </div>
@@ -111,5 +131,5 @@ export default function ConfirmPayment({
       </Transition.Root>
       <Toaster />
     </>
-  )
+  );
 }
