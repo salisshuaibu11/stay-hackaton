@@ -154,6 +154,7 @@ const Home = ({ banks }) => {
     };
     if (Number(amount) < 1000) {
       toast.error("Sorry you cannot withdraw below 1 thousand Naira");
+      setWidthdrawStep(1);
       return;
     }
     setButtonLoading(true);
@@ -182,14 +183,21 @@ const Home = ({ banks }) => {
 
   const closeModal = () => {
     setConfirmPaymentOpen(false);
+    setAccount("");
+    setBankCode("");
+    setBankName("");
+    setName("");
+    setWidthdrawStep(1);
+    setAmount("");
+    setOpen(false);
   };
 
   const savePayout = async () => {
     setPayoutLoading(true);
     try {
-      await api.put("/payout/save");
-      const savedPayout = await api.get(`payout`);
-      setPayout(savedPayout.data.data);
+      const allPayout = await api.put("/payout/save");
+      const payout = await api.get(`payout`);
+      setPayout(payout.data.data);
       toast.success("Bank Details Stored Successfully");
       closeModal();
     } catch (error) {
